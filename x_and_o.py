@@ -171,4 +171,5 @@ while not someone_won:
         print("Another error")
         board_was_chaged = False
 
+
 print(get_current_player_name() + " won !!!")
