@@ -1,15 +1,21 @@
+import json
 
-import platform
-print(platform.python_version())
+class Game:
+   def __init__(self, data:json):
+       self.matrix_size:int = data['matrix_size']
+       self.first_player:str = data['first_player']
+       self.second_player:str = data['second_player']
+       self.port:int = data['port']
+       self.currentPlayer:int = data['player_starting_first']
+       self.matrix:list = [['.' for x in range(self.matrix_size)] for y in range(self.matrix_size)]
+       self.celCoordinates:dict = {"line" : -1, "column" : -1 }
+       self.consecutive_cells_to_win:int = 5
 
-matrix  = []
-matrix_size:int = 0
-currentPlayer:int = 0
-cellCoordinates = {
-    "line" : -1,
-    "column" : -1
-    }
-consecutive_cells_to_win:int = 5
+with open("init_file.json") as json_file:
+    data = json.load(json_file)
+
+newGame = Game(data)
+
 
 def print_matrix():
     top_line:str = "      "
@@ -74,7 +80,7 @@ def verify_if_player_won(line:int, column:int, symbol:str)-> bool:
         else:
             consecutive_cells = 0
         if consecutive_cells == consecutive_cells_to_win:
-            sreturn True
+            return True
 
     consecutive_cells = 0
     for j in range(bottom_column, upper_column):
@@ -88,7 +94,6 @@ def verify_if_player_won(line:int, column:int, symbol:str)-> bool:
     consecutive_cells = 0
     for i in range(-4,5):
         if line + i >= 0 and column + i >= 0 and line + i < matrix_size and column + i < matrix_size:
-            matrix[line+i][column+i] = 'x'
             if matrix[line+i][column+i] == symbol:
                 consecutive_cells+=1
             else:
@@ -112,9 +117,9 @@ player1:str = "Doge"
 player2:str = "YunYun"
 while True:
     try:
-        print("Select the matrix size (min 5, max 51)")
+        print("Select the matrix size (min 15, max 51)")
         matrix_size = int(input(">"))
-        if matrix_size < 5 or matrix_size > 51:
+        if matrix_size < 15 or matrix_size > 51:
             continue
         matrix_size+=1
         print("Which player starts first?")
@@ -171,5 +176,5 @@ while not someone_won:
         print("Another error")
         board_was_chaged = False
 
-
+print_matrix()
 print(get_current_player_name() + " won !!!")
