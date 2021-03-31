@@ -1,4 +1,5 @@
 import json
+import sys
 
 class Game:
     def __init__(self, data:json):
@@ -147,8 +148,8 @@ class Game:
         self.print_matrix()
         print(self.get_current_player_name() + " won !!!")
                         
-
-
+def print_usage():
+    print(f"usage: {sys.argv[0]} " +'{-in | -js -p path | -cmd -p1 player1 -p2 player2 -po port -ms matrix_size} [[-sp 1|2] | r ]')
 
 def init_from_standard_input():
     while True:
@@ -171,6 +172,7 @@ def init_from_standard_input():
         except:
             print("Error. Please insert a number.")
 
+print_usage()
 
 with open("init_file.json") as json_file:
     data = json.load(json_file)
